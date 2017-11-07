@@ -3,6 +3,7 @@ import requests
 import time
 import datetime
 import json
+import sys
 
 
 def calendar_to_json(git_calendar):
@@ -26,13 +27,19 @@ def retrieve_data(user_name):
                 datetime.datetime.strptime(date, "%Y-%m-%d").timetuple())
             contributions = day.attrs['data-count']
             git_calendar[timestamp] = contributions
-
+    else:
+        print('\033[31m' + 'ERROR: user does not exist')
+        exit()
     return git_calendar
 
 
 def main():
     if __name__ == "__main__":
-        calendar = retrieve_data('danielsto')
+        user_name = sys.argv[1]
+        print('..... Retrieving data from user named: ' + user_name)
+        calendar = retrieve_data(user_name)
+        print(
+            '..... Dumping data into JSON format in the file: contributions.json')
         calendar_to_json(calendar)
 
 
